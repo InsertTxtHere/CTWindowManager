@@ -14,7 +14,7 @@ public struct CTWindowRootView<Content: View>: View {
     let content: () -> Content
     
     public var body: some View {
-        CTWindowLayoutView(layout: layout, content: content)
+        CTLayoutView(layout: layout, content: content)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     

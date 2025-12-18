@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CTWindowLayoutView<Content: View>: View {
+struct CTLayoutView<Content: View>: View {
     
     var layout: CTWindowLayout
     
@@ -48,12 +48,12 @@ struct CTWindowLayoutView<Content: View>: View {
             case is CTWindowPane:
                 VStack {
                     paneBarView(child: child)
-                    CTWindowView(content: content)
+                    CTPaneView(content: content)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
                 
             case is CTWindowLayout:
-                CTWindowLayoutView(layout: child as! CTWindowLayout, content: content)
+                CTLayoutView(layout: child as! CTWindowLayout, content: content)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 
             default: fatalError("Child is not CTWindowLayout or CTWindowView. This should never happen. \(child)")

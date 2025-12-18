@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CTWindowView<Content: View>: View {
+struct CTPaneView<Content: View>: View {
     let content: () -> Content
     var body: some View {
         content()
