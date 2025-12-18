@@ -7,15 +7,17 @@
 
 import SwiftUI
 
-struct CTWindowLayoutView: View {
+struct CTWindowLayoutView<Content: View>: View {
     
     var layout: CTWindowLayout
+    
+    let content: () -> Content
     
     var body: some View {
         ZStack {
             if layout.children.count == 0 {
                 Button() {
-                    layout.addChild(CTWindowPane())
+                    layout.children.append(CTWindowPane())
                 } label: {
                     Image(systemName: "plus")
                         .padding(5)
@@ -46,11 +48,13 @@ struct CTWindowLayoutView: View {
             case is CTWindowPane:
                 VStack {
                     paneBarView(child: child)
-                    CTWindowView()
+                    CTWindowView(content: content)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
                 
             case is CTWindowLayout:
-                CTWindowLayoutView(layout: child as! CTWindowLayout)
+                CTWindowLayoutView(layout: child as! CTWindowLayout, content: content)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 
             default: fatalError("Child is not CTWindowLayout or CTWindowView. This should never happen. \(child)")
             }
@@ -73,9 +77,9 @@ struct CTWindowLayoutView: View {
             
             Menu() {
                 Button("Pane on right",
-                       action: { layout.addPane(to: child.id, for: .horizontal) })
+                       action: { layout.addPane(to: child, for: .horizontal) })
                 Button("Panel on bottom",
-                       action: { layout.addPane(to: child.id, for: .vertical) })
+                       action: { layout.addPane(to: child, for: .vertical) })
             } label: {
                 Image(systemName: "plus")
                     .padding(5)

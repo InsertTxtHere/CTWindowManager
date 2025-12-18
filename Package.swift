@@ -12,13 +12,13 @@ let package = Package(
             name: "CTWindowManager",
             targets: ["CTWindowManager"]
         ),
+        .executable(name: "CTWindowApp", targets: ["CTWindowApp"])
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
-        .target(
-            name: "CTWindowManager"
-        ),
+        .target(name: "CTWindowManager"),
+        .executableTarget(name: "CTWindowApp", dependencies: ["CTWindowManager"])
 
     ]
 )

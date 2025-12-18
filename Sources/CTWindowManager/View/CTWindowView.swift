@@ -7,9 +7,10 @@
 
 import SwiftUI
 
-struct CTWindowView: View {
+struct CTWindowView<Content: View>: View {
+    let content: () -> Content
     var body: some View {
-        ContentView()
+        content()
     }
 }
 
