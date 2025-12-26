@@ -74,4 +74,29 @@ struct CTLayoutView<Content: View>: View {
         }
         
     }
+    
+    @ViewBuilder
+    func paneBarView(child: any CTWindowLayoutProtocol) -> some View {
+        HStack {
+            Button {
+                layout.removeChild(child)
+            } label: {
+                Image(systemName: "xmark")
+            }.buttonBorderShape(.circle)
+            
+            Menu() {
+                Button("Pane on right",
+                       action: { layout.addPane(to: child, for: .horizontal) })
+                Button("Panel on bottom",
+                       action: { layout.addPane(to: child, for: .vertical) })
+            } label: {
+                Image(systemName: "plus")
+            }
+            .buttonBorderShape(.circle)
+            
+            Spacer()
+            
+        }
+        .background(.ultraThinMaterial, in: .capsule)
+    }
 }
