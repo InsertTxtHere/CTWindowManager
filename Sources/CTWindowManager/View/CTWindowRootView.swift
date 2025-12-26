@@ -31,3 +31,17 @@ public struct CTWindowRootView<Content: View>: View {
         self.content = content
     }
 }
+
+extension View {
+    func paneBarItems<Items: View>(@ViewBuilder items: () -> Items) -> some View {
+        ZStack(alignment: .top) {
+            self
+            HStack {
+                items()
+            }
+            .buttonBorderShape(.capsule)
+            .background(.ultraThinMaterial, in: .capsule)
+            .padding(3)
+        }
+    }
+}

@@ -46,11 +46,24 @@ struct CTLayoutView<Content: View>: View {
         ForEach(layout.children, id: \.id) { child in
             switch child {
             case is CTWindowPane:
-                VStack {
-                    paneBarView(child: child)
-                    CTPaneView(content: content)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }
+                CTPaneView(content: content)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .paneBarItems {
+                        Button {
+                            layout.removeChild(child)
+                        } label: {
+                            Image(systemName: "xmark")
+                        }
+                        
+                        Menu() {
+                            Button("Pane on right",
+                                   action: { layout.addPane(to: child, for: .horizontal) })
+                            Button("Panel on bottom",
+                                   action: { layout.addPane(to: child, for: .vertical) })
+                        } label: {
+                            Image(systemName: "plus")
+                        }
+                    }
                 
             case is CTWindowLayout:
                 CTLayoutView(layout: child as! CTWindowLayout, content: content)
@@ -60,32 +73,5 @@ struct CTLayoutView<Content: View>: View {
             }
         }
         
-    }
-    
-    @ViewBuilder
-    func paneBarView(child: any CTWindowLayoutProtocol) -> some View {
-        HStack {
-            Button {
-                layout.removeChild(child)
-            } label: {
-                Image(systemName: "xmark")
-                    .padding(5)
-                    .background(.tertiary, in: .rect)
-            }.buttonStyle(.plain)
-
-            Spacer()
-            
-            Menu() {
-                Button("Pane on right",
-                       action: { layout.addPane(to: child, for: .horizontal) })
-                Button("Panel on bottom",
-                       action: { layout.addPane(to: child, for: .vertical) })
-            } label: {
-                Image(systemName: "plus")
-                    .padding(5)
-                    .background(.tertiary, in: .rect)
-            }.buttonStyle(.plain)
-            
-        }.background(.tertiary, in: .rect)
     }
 }
