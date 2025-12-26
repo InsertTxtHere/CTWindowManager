@@ -34,11 +34,10 @@ public struct CTWindowRootView<Content: View>: View {
 
 extension View {
     func paneBarItems<Items: View>(@ViewBuilder items: () -> Items) -> some View {
-        ZStack(alignment: .top) {
+        ZStack(alignment: .topLeading) {
             self
             HStack {
                 items()
-                Spacer()
             }
             .buttonBorderShape(.capsule)
             .background(.ultraThinMaterial, in: .capsule)
