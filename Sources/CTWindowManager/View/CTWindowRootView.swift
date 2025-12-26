@@ -38,6 +38,7 @@ extension View {
             self
             HStack {
                 items()
+                Spacer()
             }
             .buttonBorderShape(.capsule)
             .background(.ultraThinMaterial, in: .capsule)
