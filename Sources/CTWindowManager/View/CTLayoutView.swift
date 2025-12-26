@@ -46,10 +46,11 @@ struct CTLayoutView<Content: View>: View {
         ForEach(layout.children, id: \.id) { child in
             switch child {
             case is CTWindowPane:
-                VStack {
-                    paneBarView(child: child)
+                ZStack(alignment: .top) {
                     CTPaneView(content: content)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    paneBarView(child: child)
+                        .padding(5)
                 }
                 
             case is CTWindowLayout:
@@ -69,11 +70,7 @@ struct CTLayoutView<Content: View>: View {
                 layout.removeChild(child)
             } label: {
                 Image(systemName: "xmark")
-                    .padding(5)
-                    .background(.tertiary, in: .rect)
-            }.buttonStyle(.plain)
-
-            Spacer()
+            }.buttonBorderShape(.circle)
             
             Menu() {
                 Button("Pane on right",
@@ -82,10 +79,12 @@ struct CTLayoutView<Content: View>: View {
                        action: { layout.addPane(to: child, for: .vertical) })
             } label: {
                 Image(systemName: "plus")
-                    .padding(5)
-                    .background(.tertiary, in: .rect)
-            }.buttonStyle(.plain)
+            }
+            .buttonBorderShape(.circle)
             
-        }.background(.tertiary, in: .rect)
+            Spacer()
+            
+        }
+        .background(.ultraThinMaterial, in: .capsule)
     }
 }

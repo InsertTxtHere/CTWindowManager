@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View { 
+    
+    let color = Color(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1))
+    
+    var body: some View {
         VStack {
             Image(systemName: "globe")
                 .imageScale(.large)
@@ -17,6 +20,7 @@ struct ContentView: View {
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(color)
     }
 }
 
