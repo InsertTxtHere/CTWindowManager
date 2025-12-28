@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CTLayoutView<Content: View>: View {
     
-    var layout: CTWindowLayout
+    @State var layout: CTWindowLayout
     
     let content: () -> Content
     
@@ -73,5 +73,28 @@ struct CTLayoutView<Content: View>: View {
             }
         }
         
+    }
+}
+
+public enum CTLayoutDefenition {
+    case vStack(children: [CTLayoutDefenition])
+    case hStack(children: [CTLayoutDefenition])
+    case pane
+    
+    func cunstructLayout(parent: CTWindowLayout?) -> CTWindowLayoutProtocol {
+        switch self {
+        case .vStack(let children):
+            let layout = CTWindowLayout(parent: parent, orientation: .vertical, children: [])
+            layout.children.append(contentsOf: children.map({ $0.cunstructLayout(parent: layout) }))
+            return layout
+            
+        case .hStack(let children):
+            let layout = CTWindowLayout(parent: parent, orientation: .horizontal, children: [])
+            layout.children.append(contentsOf: children.map({ $0.cunstructLayout(parent: layout) }))
+            return layout
+            
+        case .pane:
+            return CTWindowPane()
+        }
     }
 }

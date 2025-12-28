@@ -12,9 +12,18 @@ import CTWindowManager
 struct CTWindowApp: App {
     var body: some Scene {
         WindowGroup {
-            CTWindowRootView() {
+            CTWindowRootView {
                 ContentView()
+            } layoutDefinition: {
+                .hStack(children: [
+                    .pane,
+                    .vStack(children: [
+                        .pane,
+                        .pane
+                    ])
+                ])
             }
+
         }
     }
 }
@@ -22,8 +31,16 @@ struct CTWindowApp: App {
 
 
 #Preview {
-    CTWindowRootView() {
+    CTWindowRootView {
         ContentView()
+    } layoutDefinition: {
+        .hStack(children: [
+            .pane,
+            .vStack(children: [
+                .pane,
+                .pane
+            ])
+        ])
     }
         .frame(width: 400)
 }
