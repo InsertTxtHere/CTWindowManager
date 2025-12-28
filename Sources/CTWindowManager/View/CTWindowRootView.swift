@@ -7,18 +7,18 @@
 
 import SwiftUI
 
-public struct CTWindowRootView<Content: View>: View {
+public struct CTWindowRootView<Selection: CTTabSelection, Content: View>: View {
     
     @State var layout: CTWindowLayout
     
-    let content: () -> Content
+    let content: (_ selection: Selection) -> Content
     
     public var body: some View {
         CTLayoutView(layout: layout, content: content)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
-    public init(@ViewBuilder content: @escaping () -> Content, layoutDefinition: () -> CTLayoutDefenition) {
+    public init(selection: Selection.Type, @ViewBuilder content: @escaping (_ selection: Selection) -> Content, layoutDefinition: () -> CTLayoutDefenition) {
         self.content = content
 
         switch layoutDefinition() {

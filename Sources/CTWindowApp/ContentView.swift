@@ -10,19 +10,9 @@ import CTWindowManager
 
 struct ContentView: View {
     
-    let color = Color(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1))
+    let color = Color(hue: .random(in: 0...1), saturation: 0.7, brightness: 0.6)
     
-    let loadLayout: (_ layout: CTLayoutDefenition) -> ()
-    
-    var defoultLayout: CTLayoutDefenition {
-        .hStack(children: [
-            .pane,
-            .vStack(children: [
-                .pane,
-                .pane
-            ])
-        ])
-    }
+    @State var selection: CTWindowApp.Selection
     
     var body: some View {
         VStack {
@@ -33,19 +23,9 @@ struct ContentView: View {
             
             Divider()
             Text("Load Layouts")
-            
-            Button("Defoult") {
-                loadLayout(defoultLayout)
-            }
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(color)
-    }
-}
-
-#Preview {
-    ContentView { layout in
-        
     }
 }

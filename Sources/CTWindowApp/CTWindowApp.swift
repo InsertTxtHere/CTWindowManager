@@ -13,12 +13,17 @@ struct CTWindowApp: App {
     
     @State var selectedLayout: CTLayoutDefenition = .pane
     
+    enum Selection: String, CTTabSelection {
+        case main = "Main"
+        
+        var name: String { self.rawValue }
+        var id: String { self.rawValue }
+    }
+    
     var body: some Scene {
         WindowGroup {
-            CTWindowRootView {
-                ContentView { layout in
-                    selectedLayout = layout
-                }
+            CTWindowRootView(selection: Selection.self) { selection in
+                ContentView(selection: selection)
             } layoutDefinition: { .defoultLayout() }
 
         }
@@ -38,13 +43,13 @@ extension CTLayoutDefenition {
 }
 
 
-#Preview {
-    @Previewable @State var selectedLayout: CTLayoutDefenition = .pane
-
-    CTWindowRootView {
-        ContentView { layout in
-            selectedLayout = layout
-        }
-    } layoutDefinition: { selectedLayout }
-        .frame(width: 400)
-}
+//#Preview {
+//    @Previewable @State var selectedLayout: CTLayoutDefenition = .pane
+//
+//    CTWindowRootView {
+//        ContentView { layout in
+//            selectedLayout = layout
+//        }
+//    } layoutDefinition: { selectedLayout }
+//        .frame(width: 400)
+//}

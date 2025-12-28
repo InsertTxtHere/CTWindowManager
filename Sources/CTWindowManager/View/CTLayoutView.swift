@@ -7,17 +7,17 @@
 
 import SwiftUI
 
-struct CTLayoutView<Content: View>: View {
+struct CTLayoutView<Selection: CTTabSelection, Content: View>: View {
     
     @State var layout: CTWindowLayout
     
-    let content: () -> Content
+    let content: (_ selection: Selection) -> Content
     
     var body: some View {
         ZStack {
             if layout.children.count == 0 {
                 Button() {
-                    layout.children.append(CTWindowPane())
+                    layout.children.append(CTWindowPane(parent: layout))
                 } label: {
                     Image(systemName: "plus")
                         .padding(5)
@@ -46,24 +46,8 @@ struct CTLayoutView<Content: View>: View {
         ForEach(layout.children, id: \.id) { child in
             switch child {
             case is CTWindowPane:
-                CTPaneView(content: content)
+                CTPaneView(pane: child as! CTWindowPane, content: content)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .paneBarItems {
-                        Button {
-                            layout.removeChild(child)
-                        } label: {
-                            Image(systemName: "xmark")
-                        }
-                        
-                        Menu() {
-                            Button("Pane on right",
-                                   action: { layout.addPane(to: child, for: .horizontal) })
-                            Button("Panel on bottom",
-                                   action: { layout.addPane(to: child, for: .vertical) })
-                        } label: {
-                            Image(systemName: "plus")
-                        }
-                    }
                 
             case is CTWindowLayout:
                 CTLayoutView(layout: child as! CTWindowLayout, content: content)
@@ -94,7 +78,13 @@ public enum CTLayoutDefenition {
             return layout
             
         case .pane:
-            return CTWindowPane()
+            if let parent {
+                return CTWindowPane(parent: parent)
+            } else {
+                let layout = CTWindowLayout(parent: parent, orientation: .horizontal, children: [])
+                layout.children = [CTWindowPane(parent: layout)]
+                return layout
+            }
         }
     }
 }

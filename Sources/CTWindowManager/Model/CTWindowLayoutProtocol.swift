@@ -7,6 +7,7 @@
 
 import SwiftUI
 
-protocol CTWindowLayoutProtocol: Identifiable {
+protocol CTWindowLayoutProtocol: Identifiable, AnyObject {
     var id: UUID { get }
+    var parent: CTWindowLayout? { get set }
 }
