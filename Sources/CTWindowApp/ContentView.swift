@@ -6,10 +6,23 @@
 //
 
 import SwiftUI
+import CTWindowManager
 
 struct ContentView: View {
     
     let color = Color(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1))
+    
+    let loadLayout: (_ layout: CTLayoutDefenition) -> ()
+    
+    var defoultLayout: CTLayoutDefenition {
+        .hStack(children: [
+            .pane,
+            .vStack(children: [
+                .pane,
+                .pane
+            ])
+        ])
+    }
     
     var body: some View {
         VStack {
@@ -17,6 +30,13 @@ struct ContentView: View {
                 .imageScale(.large)
                 .foregroundStyle(.tint)
             Text("Hello, world!")
+            
+            Divider()
+            Text("Load Layouts")
+            
+            Button("Defoult") {
+                loadLayout(defoultLayout)
+            }
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -25,5 +45,7 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    ContentView { layout in
+        
+    }
 }

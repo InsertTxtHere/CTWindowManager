@@ -9,7 +9,7 @@ import SwiftUI
 
 public struct CTWindowRootView<Content: View>: View {
     
-    let layout: CTWindowLayout
+    @State var layout: CTWindowLayout
     
     let content: () -> Content
     
@@ -18,17 +18,18 @@ public struct CTWindowRootView<Content: View>: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
-    public init(@ViewBuilder content: @escaping () -> Content) {
-        layout = CTWindowLayout(parent: nil, orientation: .horizontal, children: [])
-//        layout.addChild(CTWindowPane())
-//        
-//        let vLayout = CTWindowLayout(parent: layout, orientation: .vertical, children: [])
-//        vLayout.addChild(CTWindowPane())
-//        vLayout.addChild(CTWindowPane())
-//        
-//        layout.addChild(vLayout)
-        
+    public init(@ViewBuilder content: @escaping () -> Content, layoutDefinition: () -> CTLayoutDefenition) {
         self.content = content
+
+        switch layoutDefinition() {
+        case .vStack(let children):
+            layout = layoutDefinition().cunstructLayout(parent: nil) as! CTWindowLayout
+        case .hStack(let children):
+            layout = layoutDefinition().cunstructLayout(parent: nil) as! CTWindowLayout
+        case .pane:
+            layout = CTWindowLayout(parent: nil, orientation: .horizontal, children: [])
+            layout.children = [layoutDefinition().cunstructLayout(parent: layout) as! CTWindowPane]
+        }
     }
 }
 

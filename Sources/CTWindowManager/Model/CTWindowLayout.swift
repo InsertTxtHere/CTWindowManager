@@ -35,19 +35,27 @@ class CTWindowLayout: CTWindowLayoutProtocol {
         if children.count == 0 { parent?.removeChild(self) }
     }
     
+    private func addChild(_ child: CTWindowLayoutProtocol, at index: Int) {
+        if index > children.count - 1 {
+            children.append(child)
+        } else {
+            children.insert(child, at: index)
+        }
+    }
+    
     func addPane(to pane: CTWindowLayoutProtocol, for orientation: Orientation) {
         if self.orientation == orientation {
             let index = children.firstIndex(where: { $0.id == pane.id })!
-            children.insert(CTWindowPane(), at: index)
+            addChild(CTWindowPane(), at: index + 1)
             
         } else {
             let index = children.firstIndex(where: { $0.id == pane.id })!
             children.removeAll { $0.id == pane.id }
             
-            children.insert(CTWindowLayout(parent: self, orientation: orientation, children: [
+            addChild(CTWindowLayout(parent: self, orientation: orientation, children: [
                 pane,
                 CTWindowPane()
-            ]), at: index)
+            ]), at: index + 1)
         }
     }
     

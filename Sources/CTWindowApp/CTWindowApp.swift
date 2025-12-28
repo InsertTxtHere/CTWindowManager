@@ -10,20 +10,41 @@ import CTWindowManager
 
 @main
 struct CTWindowApp: App {
+    
+    @State var selectedLayout: CTLayoutDefenition = .pane
+    
     var body: some Scene {
         WindowGroup {
-            CTWindowRootView() {
-                ContentView()
-            }
+            CTWindowRootView {
+                ContentView { layout in
+                    selectedLayout = layout
+                }
+            } layoutDefinition: { .defoultLayout() }
+
         }
     }
 }
 
+extension CTLayoutDefenition {
+    static func defoultLayout() -> CTLayoutDefenition {
+        .hStack(children: [
+            .pane,
+            .vStack(children: [
+                .pane,
+                .pane
+            ])
+        ])
+    }
+}
 
 
 #Preview {
-    CTWindowRootView() {
-        ContentView()
-    }
+    @Previewable @State var selectedLayout: CTLayoutDefenition = .pane
+
+    CTWindowRootView {
+        ContentView { layout in
+            selectedLayout = layout
+        }
+    } layoutDefinition: { selectedLayout }
         .frame(width: 400)
 }

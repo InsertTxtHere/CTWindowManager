@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CTPaneView<Content: View>: View {
     
-    let content: () -> Content
+    @State var content: () -> Content
     
     var body: some View {
         content()
